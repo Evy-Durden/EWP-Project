@@ -1,0 +1,59 @@
+\section{Introduction}
+
+\subsection{Context}
+
+Privilege escalation is common tactic in the context of cyber attacks. It is a collection of various techniques which all aim to achieve gaining higher-level permissions on a system or network. Initially adversaries find a way to enter and explore a network even irrespective of the fact they only have unprivileged access. In most cases this not sufficient for the overarching goals and elevated permissions are required to follow through on the actual objectives. \newline\newline Common ways to achieve this is through exploiting system weaknesses and misconfigurations. The desired end result is to have elevated access in from of root level, local administrator or an account with admin-like access.\footnote{The Mitre Cooperation. Privilege Escalation [online] homepage: attack.mitre.org URL: https://attack.mitre.org/tactics/TA0004/ [Accessed 26.11.2025]}
+
+\subsection{Problem statement}
+
+The Berliner Hochschule für Technik (BHT) is one the largest state universities of applied sciences in Germany.  It was founded in 1971 and it offers a wide range of bachelor and master courses. It runs its own data center which encompasses  many different technologies spanning different hardware vendors, operating systems and software applications. The university has several machines which run Unix operating systems of various distributions. The machines vary in setup and configuration. This heterogeneous technical landscape can accumulate a plethora of misconfigurations over time. Some of them may lead to serious vulnerabilities including insecure permissions, shell escapes and kernel exploits. \newline At the moment there is no comprehensive tool or script in place which can detect misconfigurations and provide the necessary information to mitigate vulnerabilities.  \newline\newline This can lead to severe consequences concerning the safety of the network infrastructure of the university. It leaves the door open for various damaging scenarios including complete loss of data or extortion through a ransomware attack. 
+
+\subsection{Research Objectives}
+
+The aim is to identify the misconfigurations and other aspects on Linux machines which could cause vulnerabilities. \newline\newline First it has to be established which systems are actually part of the university network and are using a Linux distribution as the operating system. Next the relevant systems are scanned for misconfigurations. Furthermore once the vulnerabilities have been detected and verified solutions will be suggested in order to mitigate them. 
+
+\subsection{Research Questions}
+
+The thesis aims to answer the following questions:
+
+\begin{itemize}
+	\item Which misconfigurations are prevalent on Linux machines?
+	\item Which vulnerabilities can result from the misconfigurations that have been found?
+	\item What are the solutions to mitigate the vulnerabilities?
+\end{itemize}
+
+\subsection{Significance and Benefits}
+
+There are a plethora of tools which scan systems for monitoring reasons or detecting vulnerabilities. These are often big applications with a graphical user interface and a steep learning curve. They need to cover a lot of different options and systems. I propose a lean but effective CLI (command line interface) tool which narrows down on finding misconfiguration on Linux systems. The approach is to get satisfying results through a simple CLI which takes very minimal effort to understand and use. Most importantly I further propose using eBPF (extended Berkeley Packet Filter) to detect misconfigurations behaviorally not just statically. \newline\newline To address the aforementioned questions I have developed CLI tool which detects misconfigurations statically and behaviorally, uses these to identify potential vulnerabilities and gathers further information through connecting to APIs to improve the security of the affected systems. \newline To this end, I make the following contributions:
+
+\begin{enumerate}
+	\item comprehensive but user-friendly CLI
+	\item thoroughly analyzing how the system is configured (static approach)
+	\item use eBPF to observe runtime behavior
+	\item kernel surface checks via eBPF probes
+	\item collecting useful information through retrieving information from CVE APIs
+\end{enumerate}
+
+\subsection{Scope and Limitations}
+
+The tool is designed to scan for misconfigurations only on systems which run a Linux distribution for the operating system. There will be no graphical user interface. It is solely a CLI tool. \newline It finds misconfigurations, lays out potential vulnerabilities and suggests techniques to mitigate those. It is not designed to change any wrong configurations. Furthermore it has no capability to automate changing configurations on the machines. \newline\newline There is no notification system in place which notifies the user over email or phone. The script will run and the results will displayed on screen and optionally written into a PDF file. 
+
+\subsection{Structure of the Thesis}
+
+The second chapter 'Technical Base' will go through all the relevant technologies and tools which are used together to make up this project. \newline\newline The third chapter 'Analysis' defines the requirements for the tool. It covers functional, technical and security related aspects. \newline\newline The fourth chapter 'Design' depicts how the tool fulfills the requirements laid out in the 'Analysis' chapter. Some topics are system architecture, component design and UML diagrams. \newline\newline The fifth chapter 'Implementation' show how the design has been translated into working code. It explains what was built and how and what challenges arose in the process. \newline\newline The sixth chapter 'Utilization' demonstrates how the tool is actually used. It shows the real-world usage, effectiveness of the tool and most importantly how it solves the problems identified beforehand. \newline\newline The seventh chapter 'Evaluation' provides proof that the tool works and assesses its quality. Moreover it reflects on how well it meets the defined goals. 
+
+\subsection{AI Usage}
+
+AI was used for these specific tasks:
+
+\begin{itemize}
+	\item finding appropriate literature
+	\item finding appropriate research papers
+	\item guiding and helping to refine the structure of the thesis when necessary
+	\item assisting in understanding complex topics
+\end{itemize}
+
+
+
+
+
