@@ -2,15 +2,39 @@
 
 \subsection{Introduction}
 
-!
+This chapter portrays the results of requirements engineering, stakeholder analysis and goes through the risk analysis of using the tool at the end.
 
 \subsection{Current Situation}
 
-!
+Misconfiguration on Linux machines can lead to a host of vulnerabilites related to privilege escalation. Through a comprehensive analysis these misconfigurations can be detected and the risks of compromise mitigated.\newline\newline Detecting misconfiguration statically (e.g. configs, permissions) is a very good start and a mandatory component of the analysis. However what is lacking is a behavioral approach. In addition to the analysing the machines statically this tool uses eBPF to oberserve runtime behavior. This feature adds a runtime security analyzer to the misconfiguration scanner.
 
 \subsection{Objectives}
 
-!
+The tool achieves the following objectives:
+
+\begin{itemize}
+	\item static analysis to find misconfigurations
+	\item behaviorial analysis to find runtime behavioral indicators
+\end{itemize}
+
+\subsubsection{Categories}
+
+Misconfigurations and indicators can be found in the following categories:
+
+\begin{itemize}
+	\item Filesystem and Permissions
+	\item User and Group
+	\item Service and Daemon
+	\item Network
+	\item Package and Software Management
+	\item Kernel and System Hardening
+	\item Authentication and Authorization
+	\item Logging, Auditing and Monitoring
+	\item Timers, Cron
+	\item Environment and PATH
+	\item Container and Virtualization
+	\item Security Feature
+\end{itemize}
 
 \subsection{Functional Requirements}
 
@@ -35,3 +59,5 @@
 \subsection{Constraints and Limitations}
 
 !
+
+\subsection{Risk Analysis}
