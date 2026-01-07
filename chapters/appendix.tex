@@ -2,3 +2,89 @@
 
 \subsection{Functional Requirements Static Analysis}
 \label{sec:a_frs}
+
+\begin{itemize}
+	\item System Enumeration
+	\begin{itemize}
+		\item User, groups and privileges
+		\item File ownership and permissions
+		\item Installed binaries and their permission bits
+		\item Service and daemon configurations
+		\item Environment variables and shell configurations
+	\end{itemize}
+	\item Privilege Escaltion Misconfigurations
+	\begin{itemize}
+		\item World-writable or group-writable sensitive files/directories
+		\item Incorrect ownership of system binaries or scripts
+		\item Dangerous permission bits (SUID/SGID, sticky bit misuse)
+		\item Writable directories in \$PATH
+		\item Misconfigured sudoers rules
+		\item Weak service configurations
+		\item Insecure cron jobs
+		\item Capabilities assigned to binaries
+	\end{itemize}
+	\item Rule-based Analysis
+	\item Severity and Context Assignment
+	\begin{itemize}
+		\item assign each issue a severity level: low, medium, high, critical
+		\item contextual metadata: affacted files, user, service
+	\end{itemize}
+\end{itemize}
+
+\subsection{Functional Requirements Behavioral Analysis}
+\label{sec:a_frb}
+
+\begin{itemize}
+	\item Runtime Event Monitoring
+	\begin{itemize}
+		\item Process execution (execve)
+		\item Privilege changes (setuid, setgid, capabilities)
+		\item File access and modification
+		\item Interactions with sensitive kernel interfaces
+		\item Unexpected access to critical system files
+	\end{itemize}
+	\item Detection of Suspicious or Policy-Violating Behavior
+	\begin{itemize}
+		\item Non-root processes invoking privileged binaries
+		\item Unexpected privilege escalation chains
+		\item Execution of writable scripts by privileged processes
+		\item Access to sensitive files by unusual processes
+	\end{itemize}
+	\item Correlation Between Static and Behavioral Findings
+	\item Time-limited behavioral monitoring
+\end{itemize}
+
+\subsection{Functional Requirements Command Line Interface}
+\label{sec:a_frcli}
+
+\begin{itemize}
+	\item Execution Modes
+	\begin{itemize}
+		\item Statistic analysis only
+		\item Behavioral analysis only
+		\item Combined analysis mode
+	\end{itemize}
+	\item Output Control
+	\begin{itemize}
+		\item Print output to command line (stdout)
+		\item Provide option to create report text file
+	\end{itemize}
+	\item Least-Privilege Operation
+	\begin{itemize}
+		\item Separate functionality that requires root privileges
+		\item Fail if insufficient permissions are available
+		\item Inform the user why elevated privileges are required (especially for eBPF)
+	\end{itemize}
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+

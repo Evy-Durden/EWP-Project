@@ -40,18 +40,31 @@ Misconfigurations and indicators can be found in the following categories:
 
 \subsubsection{Functional Requirements Static Analysis}
 
-The static analysis inspects configurations and system state without observing runtime behaviour. The tool is able to enumerate relevant system properties like users, groups, privileges, file ownership, permissions and service as well as daemon configurations to just name a few. There will be extra focus on misconfigurations which could lead to privilege escalation. \newline\newline At its core the tool is a rule-based analysis engine which uses explicit rules to collect data and categorizes the findings. It is a deterministic approach which puts the ability to understand the findings in the foreground rather than heuristic detection.\newline\newline Furthermore each detected issue is provided with a severity level and contextual metadata such as the affected user or file.\newline\newline A full list of all functional requirements is provided in the appendix ~\ref{sec:a_frs}.
+The static analysis inspects configurations and system state without observing runtime behaviour. The tool is able to enumerate relevant system properties like users, groups, privileges, file ownership, permissions and service as well as daemon configurations to just name a few. There will be extra focus on misconfigurations which could lead to privilege escalation. \newline\newline At its core the tool is a rule-based analysis engine which uses explicit rules to collect data and categorizes the findings. It is a deterministic approach which puts the ability to understand the findings in the foreground rather than heuristic detection.\newline\newline Furthermore each detected issue is provided with a severity level and contextual metadata such as the affected user or file.\newline\newline A full list of all functional requirements in context of the static analysis is provided in the appendix ~\ref{sec:a_frs}.
 
 \subsubsection{Functional Requirements Behavioral Analysis}
 
+The behavioral analysis covers the security-relevant runtime behavior using eBPF. It looks for behaviors indicating the exploitation of misconfigurations. In the case of both static and behavioral analysis being run the tool tries to corrolate the findings of static and behavioral analysis. The behavioral is time-limited and can be chosen by the user. Most importantly the monitoring is read-only and non-intrusive. \newline\newline A full list of all functional requirements in context of the behavioral analysis is provided in the appendix ~\ref{sec:a_frb}.
+
 \subsubsection{Functional Requirements CLI}
+
+The tool provides different execution modes to choose from. The user can also control the output of the findings. It separates functionality based on the need of root privileges and fails if insufficient permissions are provided. It notifies the user in case of failure. \newline\newline A full list of all functional requirements in context of the command line interface is provided in the appendix ~\ref{sec:a_frcli}.
 
 \subsubsection{Non-functional Requirements}
 
 
 \subsection{Security Requirements}
 
+The tool is designed for non-destructive behavior only. This means that it always adheres to the following rules:
 
+\begin{itemize}
+	\item Never modify system configuration (read-only, non-intrusive)
+	\item Never kill a process
+	\item Never inject code
+	\item Never alter kernel behavior
+\end{itemize}
+
+It also adheres to the principle of least privilege. 
 
 \subsection{Technical Requirements}
 
@@ -60,9 +73,11 @@ The static analysis inspects configurations and system state without observing r
 The tool runs on Linux only. The following list includes the relevant Linux distributions:
 
 \begin{itemize}
-	\item Ubuntu
+	\item Ubuntu, Ubuntu Server
 	\item Debian
-	\item Fedora
+	\item Red Hat Enterprise Linux (RHEL)
+	\item Fedora Server
+	\item openSUSE
 \end{itemize}
 
 \subsubsection{Dependencies}
@@ -74,14 +89,14 @@ In order to use the tool the following dependencies are needed on the system:
 	\item Typer Library
 \end{itemize}
 
-
-
 \subsection{Stakeholder Analysis}
 
 The primary audience for this tool are system administrators for Linux machines. It is designed to aid them in finding misconfigurations and giving them a chance to subsequently harden their systems. \newline\newline This tool is open source. As a consequence anybody wanting to learn more about system configurations and associated vulnerabilities can benefit from this. It will give them insight on what configurations play a role in privilege escalation as well as how the code of this solution is built and how it works.
 
 \subsection{Constraints and Limitations}
 
-It does not change any configurations on a system.
+
 
 \subsection{Risk Analysis}
+
+
