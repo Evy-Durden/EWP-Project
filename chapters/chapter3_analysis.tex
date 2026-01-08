@@ -48,10 +48,18 @@ The behavioral analysis covers the security-relevant runtime behavior using eBPF
 
 \subsubsection{Functional Requirements CLI}
 
-The tool provides different execution modes to choose from. The user can also control the output of the findings. It separates functionality based on the need of root privileges and fails if insufficient permissions are provided. It notifies the user in case of failure. \newline\newline A full list of all functional requirements in context of the command line interface is provided in the appendix ~\ref{sec:a_frcli}.
+The tool provides different execution modes to choose from. The user can also control the output of the findings. It separates functionality based on the need of root privileges and fails if insufficient permissions are provided. It notifies the user in case of failure.  Users are authenticated using OAuth. \newline\newline A full list of all functional requirements in context of the command line interface is provided in the appendix ~\ref{sec:a_frcli}.
 
 \subsubsection{Non-functional Requirements}
 
+\begin{itemize}
+	\item Performance: response time, throughput
+	\item Security: data encryption for sensitive data
+	\item Usability: user-friendly and intuitive
+	\item Reliability: stability during execution, robust and crash-resistant
+	\item Maintainability: modular codebase, great documentation, automated tests
+	\item Portability: cross-distribution compatibility, containerization
+\end{itemize}
 
 \subsection{Security Requirements}
 
@@ -64,7 +72,7 @@ The tool is designed for non-destructive behavior only. This means that it alway
 	\item Never alter kernel behavior
 \end{itemize}
 
-It also adheres to the principle of least privilege. 
+It adheres to the principle of least privilege, sensitive data is encrypted and users need to authenticate themselves.
 
 \subsection{Technical Requirements}
 
