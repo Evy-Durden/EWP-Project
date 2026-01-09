@@ -38,17 +38,39 @@ The Hexagonal Architecture adheres to the Separation of Concern principle. It is
 
 \subsection{Component Design}
 
-!
+\subsubsection{CLI}
 
-\subsection{UML Diagram}
+Its sole responsibilty is to take are of input and output. The CLI parses commands and options, calls application services and  displays the results.\newline There are tasks it will explicitely not perform such as analysis and talking to the vulnerabiltiy databases in GitHub oder MITRE directly. Moreover it will not contain security logic.
 
-Maybe Use Case Diagram, Activity Diagram
+\subsubsection{Authentication}
+
+This component will ensure that user can authenticate using OAuth. 
+
+\subsubsection{Static Analysis}
+
+It scans the system for misconfigurations by examining system states and configurations. It produces findings (misconfigurations, related CVEs) in a deterministic and testable way.\newline It does not interact with any vulnerability database directly and hence is not aware where the CVEs originate from. 
+
+\subsubsection{Behavioral Analysis}
+
+There are two parts to this. One part does the analysis and the other loads the eBPF programs (kernel hooks). The analysis part does not care how the events are captured, it simply receives them.
+
+\subsubsection{Output/Report Generation}
+
+The standard output is on the terminal and is handled by the CLI. The output can also be a generated report text file. The file generation is handled completely separate from the CLI component though via its own class. 
+
+\subsubsection{Vulnerability Database}
+
+This is not a component. Any database which will provide information about related CVEs is an external system. Therefore this is solely handled via a port (e.g. VulnerabilityRepository) and adpaters (e.g. GitHubAdvisoryAdapter, MITREAdapter).
 
 \subsection{Data Flow}
 
 \subsubsection{Description}
 
+At a high level (abstract point of view) the key point is that at each layer data is consumed, transformed and passed further to the next layer without ever reversing the direction and reaching around to a former layer.
+
 \subsubsection{Flowchart}
+
+The detailed flowchart can be found in the appendix ~\ref{sec:a_flow}.
 
 \subsection{User Interface Design}
 
@@ -59,13 +81,16 @@ The tool has a command line interface (CLI). The Typer library will be used to b
 The CLI has various flags for options to choose from:
 
 \begin{itemize}
-	\item -s flag: statical mode for statical analysis
-	\item -b flag: behavioral mode for behavioral analysis
-	\item -u flag: ultimate mode, for both statical and behavioral analysis
-	\item -r flag: generates a report text file of the findings (default output is stdout)
+	\item --mode static, -s flag: statical mode for statical analysis
+	\item --mode behavioral, -b flag: behavioral mode for behavioral analysis
+	\item --mode full, -f flag: full mode, for both statical and behavioral analysis
+	\item -cve flag: adds intelligence depth by enriching the findings with CVE data. This flag is optional and must follow either s-, b- or u-flag.
+	\item -r flag: generates a report text file of the findings (default output is stdout). This flag is optional and must follow either s-, b- or u-flag.
 \end{itemize}
 
 \subsection{Security Considerations}
+
+
 
 \subsection{Design Decisions and Rationale}
 
