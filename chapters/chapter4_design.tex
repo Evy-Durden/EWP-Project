@@ -96,11 +96,42 @@ Users will have to authenticate in order to use the tool. This is crucial as the
 
 \subsubsection{Hexagonal Architecture}
 
-\footnote{URL: https://dev.to/dyarleniber/hexagonal-architecture-and-clean-architecture-with-examples-48oi}
-\footnote{URL: https://senseisrl.it/en/tech-tales/hexagonal-architecture-principles-and-benefits}
+It isolates the core business logic from any outside components of the application. The application logic is independent and unaware of for example the database or external APIs. It strives for zero coupling. There are a host of benefits in using this architecture which all support the hallmarks of great software architecture \footnote{William Virtuani. Hexagonal Architecture: Principles and Benefits Every Developer Should Know. [online] homepage: senseisrl.it URL: https://senseisrl.it/en/tech-tales/hexagonal-architecture-principles-and-benefits [Accessed 10.01.2026]}:
+
+\begin{itemize}
+	\item Testability: domain is isolated and can be tested thoroughly without the need of running a server or mocking a database or API calls.
+	\item Maintainability: changes of components do not affect the domain core logic
+	\item Reusability: the domain logic can be used across many different interfaces.
+\end{itemize}
+
+
+\subsubsection{Strategy Pattern for Analysis}
+
+The analysis part of the application implements the strategy pattern. It defines a family of behaviors, encapsulate each one and make them interchangebale. The caller does not care how something is actually done, it just cares what it can do. No matter the type of analysis (static, behavioral) certain tasks have to be done. The strategies are interchangeable.\footnote{Strategy. [online] homepage: refactoring.guru URL: https://refactoring.guru/design-patterns/strategy [Accessed 10.01.2026]}\newline Furthermore the strategy pattern supports the SOLID principles in particular Single Responisbility, Open/Closed and Dependency Inversion as the strategy pattern is implement through an interface.
 
 \subsection{Limitations}
 
+Any architecture decision introduces deliberate constraints and trade-offs. The tool is dependent on external vulnerability sources and relies on these databases to be available, up-to-date and most importantly correct. Other parts of the application display limiting factors too which will be addressed by edge cases and suggested improvements.
+
 \subsubsection{Edge Cases}
 
+\begin{itemize}
+	\item Different CVE databases disagree on severity and classification 
+	\item CVE API outage or rate limits
+	\item CVE exists but is not published yet
+	\item The tool finds no vulnerabilities at all which can lead to a false sense of security
+	\item Insufficient permissions to collect data during the analysis
+	\item Behavior is found which appears to be malicious but is benign
+	\item Inconsistent results between repeated runs
+\end{itemize}
+
 \subsubsection{Future Improvements}
+
+\begin{itemize}
+	\item Supplying the user with mitigation strategies
+	\item Extending output: adding JSON, integration with CI/CD pipelines
+\end{itemize}
+
+
+
+
