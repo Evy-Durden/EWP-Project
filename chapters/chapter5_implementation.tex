@@ -2,11 +2,17 @@
 
 \subsection{Introduction}
 
-!
+The implementation chapter talks about a wide array of topics including the development environment, setup and error handling. The end of the chapter talks about the challenges which occured during the implementation process. \newline\newline As discussed in the design chapter the tool consists of a CLI and the hexagonal architecture was chosen. The CLI will be implemented using the Typer library  and the individual components will reflect the chosen architecture.
 
 \subsection{Development Environment}
 
-!
+The primary programming language used for this tool is Python. Bash (system commands) is used to interact with the underlying operating system. The eBPF programs for the behavioral analysis are written in C. \newline\newline The tool only functions on Linux operating systems. The different distributions are listed in 3.6.1 Platform Requirements.\newline\newline Git is the version control and GitHub is used to host the code repository and for CI/CD by taking advantage of GitHub Actions the built-in automation platform.
+
+\subsubsection{Frameworks and Libraries}
+
+\begin{itemize}
+	\item Typer
+\end{itemize}
 
 \subsection{System Setup / Dependencies}
 
@@ -18,7 +24,15 @@
 
 \subsection{Key Components}
 
-!
+\subsubsection{CLI}
+
+\subsubsection{Analysis Interface}
+
+\subsubsection{Static Analysis}
+
+\subsubsection{Behavioral Analysis}
+
+\subsubsection{CVE Database Ports and Adapters}
 
 \subsection{Error Handling \& Logging}
 
