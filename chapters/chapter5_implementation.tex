@@ -16,11 +16,50 @@ The primary programming language used for this tool is Python. Bash (system comm
 
 \subsection{System Setup / Dependencies}
 
-!
+\subsubsection{Installation and Setup}
+
+The tool is a Python package which can be installed via pip. It is distributed as a Pythin CLI application and follows the standard packaging conventions. This ensures reproducibility and ease of installation. Morover it separates domain logic (encoding security reasoning) from infrastructure concerns (interaction with operating system and external systems).
+
+\subsubsection{Python Virtual Environment}
+
+It is highly recommended to use a Python virtual environment. It allows one to manage dependencies separately for different projects, preventing conflicts, maintaining cleaner setups and avoids system polution.\newline\newline \textbf{Usage} 
+\begin{lstlisting}[language=Bash,caption={Creation and activation on command line}]
+python3 -m venv venv/
+source venv/bin/activate
+\end{lstlisting}
+
+\subsubsection{Python pyproject.toml File}
+
+The pyproject.toml file is a configuration file for Python packaging. It acts as the build system, dependency manager and handles tool configurations which are represented by three tables within in the file respectively \footnote{pyproject.toml specification. [online] homepage: packaging.python.org URL: https://packaging.python.org/en/latest/specifications/pyproject-toml/\#pyproject-toml-spec [Accessed 10.01.2026]}. Setuptools is the standard build system for Python projects \footnote{Ian Currie. How to Manage Python Projects With pyproject.toml. [online] homepage: realpython.com URL: https://realpython.com/python-pyproject-toml/ [Accessed 10.01.2026]}.
+
+\begin{lstlisting}[language=bash,caption={pyproject.toml file}]
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build\_meta"
+
+[project]
+name = "linux-analyzer"
+version = "0.1.0"
+description = "Misconfiguration scanner for Linux"
+dependencies = [
+	"typer"
+]
+
+[project.scripts]
+linux-analyzer = "linux_analyzer.cli:cli"
+\end{lstlisting}
 
 \subsection{Implementation Overview}
 
-!
+This chapter is designed to be a high level explanation of the code structure.
+
+\subsubsection{Folder Structure}
+
+\subsubsection{Main Modules/Files}
+
+\subsubsection{Entry point of the application}
+
+The entry point of the application is the CLI. 
 
 \subsection{Key Components}
 
@@ -36,12 +75,35 @@ The primary programming language used for this tool is Python. Bash (system comm
 
 \subsection{Error Handling \& Logging}
 
-!
+\subsubsection{Exceptions}
+
+The goal is to handle the exceptions as part of the system architecture. They need to handled close to the boundary (point where the system must interact with something it does not control) where recovery or user communication is possible and not necessarily where the error occur. The error occurs somewhere in the system and the exception is raised there, however it handled later after it propagated upward to a place where a meaningful decision can be made. \newline\newline Errors have to be distinguished and sorted into diverse categories. The reasoning behind this is that varying errors like user, system and programming erros require a different strategy for handling them.\newline\newline Custom exceptions help to improve readabilty and convey an explicit intent. Moreover they have a semantic component and document the specific failure states.\newline\newline It is crucial to design the exceptions in a security-sensitive way. There is a risk of information leakage which is addressed by sanitizing error information and keeping the messages intentionally minimal while is still providing clear und helpful information \newline\newline The overall objective of the exceptions strategy is to improve robustness, security, and maintainability.
+
+\subsubsection{Logging}
+
+Logging will focus on two distinct purposes:
+
+\begin{enumerate}
+	\item Debugging: it is developer-focused and mainly used for development and testing
+	\item Audit: it is user-focused and provide information about the checks that have been run
+\end{enumerate}
+
 
 \subsection{Security Aspects in Implementation}
 
-!
+\subsubsection{Input Sanitization}
+
+\subsubsection{Encryption}
+
+\subsubsection{Command Injection}
+
+\subsubsection{Principle of Least Privilege}
 
 \subsection{Challenges during Implementation}
 
-!
+\subsubsection{Technical Issues}
+
+\subsubsection{Exceptionally challenging and interesting Aspects}
+
+This concludes the implementation chapter. The next chapter concerns the utilization of the tool.
+
