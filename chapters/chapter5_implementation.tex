@@ -77,27 +77,38 @@ The entry point of the application is the CLI.
 
 \subsubsection{Exceptions}
 
-The goal is to handle the exceptions as part of the system architecture. They need to handled close to the boundary (point where the system must interact with something it does not control) where recovery or user communication is possible and not necessarily where the error occur. The error occurs somewhere in the system and the exception is raised there, however it handled later after it propagated upward to a place where a meaningful decision can be made. \newline\newline Errors have to be distinguished and sorted into diverse categories. The reasoning behind this is that varying errors like user, system and programming erros require a different strategy for handling them.\newline\newline Custom exceptions help to improve readabilty and convey an explicit intent. Moreover they have a semantic component and document the specific failure states.\newline\newline It is crucial to design the exceptions in a security-sensitive way. There is a risk of information leakage which is addressed by sanitizing error information and keeping the messages intentionally minimal while is still providing clear und helpful information \newline\newline The overall objective of the exceptions strategy is to improve robustness, security, and maintainability.
+The goal is to handle the exceptions as part of the system architecture. They need to handled close to the boundary (point where the system must interact with something it does not control) where recovery or user communication is possible and not necessarily where the error occur. The error occurs somewhere in the system and the exception is raised there, however it is handled later after it propagated upward to a place where a meaningful decision can be made. \newline\newline Errors have to be distinguished and sorted into diverse categories. The reasoning behind this is that varying errors like user, system and programming erros require a different strategy for handling them.\newline\newline Custom exceptions help to improve readabilty and convey an explicit intent. Moreover they have a semantic component and document the specific failure states.\newline\newline It is crucial to design the exceptions in a security-sensitive way. There is a risk of information leakage which is addressed by sanitizing error information and keeping the messages intentionally minimal while is still providing clear und helpful information \newline\newline The overall objective of the exceptions strategy is to improve robustness, security, and maintainability.
 
 \subsubsection{Logging}
 
-Logging will focus on two distinct purposes:
+Logging focuses on two distinct purposes:
 
 \begin{enumerate}
 	\item Debugging: it is developer-focused and mainly used for development and testing
 	\item Audit: it is user-focused and provide information about the checks that have been run
 \end{enumerate}
 
-
 \subsection{Security Aspects in Implementation}
+
+\subsubsection{Defensive Validation}
+
+The tool consumes untrusted and external data when the user is starting the tool. The user has to type in which mode to use and any applicable flags. User interaction is restricted to predefined menu options, which significantly reduces the attack surface. Input validation ensures only expected option values are processed.
 
 \subsubsection{Input Sanitization}
 
+The tool works with system-derived strings which are external and could be harmful. There is a chance a system could be under the control of an attacker. Potentially harmful are for example package names, version strings from package managers, OS command output, environment information, paths, usernames and hostnames. The policy is to treat all system-derived strings as untrusted.
+
 \subsubsection{Encryption}
+
+Data at rest is not encrypted. The tool does persist any sensitive data, therefore encryption of stored data is not required in this instance.\newline\newline Data in transit is in encrypted. All communication with external vulnerability databases is encrypted to ensure confidentiality and integrity of the transmitted data.
 
 \subsubsection{Command Injection}
 
+There are multiple strategies in place to combat command injection. As mentioned beforehand user interaction is restricted to predefined menu options. It is vital that commands are executed without invoking a shell (never use \textit{shell=True}) to prevent interpretation of injected metacharacters. Furthermore all values which are passed to subprocess calls have to be validated.
+
 \subsubsection{Principle of Least Privilege}
+
+The tool adheres to the principle of least privilege through various aspects. First and foremost its default is unprivileged execution and it only requests elevated privileges for checks that cannot be performed otherwise. Additionally privilege requirements are evaluated for each individual check rather than globally. Consequently the attack surface is minimized and risk of unintended system interaction is reduced.
 
 \subsection{Challenges during Implementation}
 
