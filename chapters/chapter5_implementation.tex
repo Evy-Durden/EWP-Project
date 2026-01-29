@@ -57,6 +57,35 @@ The folder structure is provided in the appendix ~\ref{sec:a_foldstruc}.
 
 \subsubsection{Main Modules/Files}
 
+\textbf{core/ - Application Core}: Its role is to facilitate central coordination and logic and its key responsibilities are to orchestrate the analysis execution, manage execution context, defining the actual domain models  and enforcing dependency direction (hexagonal architecture).\newline
+
+\textbf{ports/ - Architectural Interfaces (Ports)}: It defines the required capabilities, specifically  all the interfaces (ports) which are required by the core application logic. A critical distinction is worth mentioning here. The interfaces describe what the systems needs to. However they do not specify hot it is done. Adapters are part of other modules which implement these interfaces. The reason behind this that it enforces inversion of control. The goal is to ensure that  dependencies always point inwards toward the core.\newline
+
+\textbf{analysis/ - Analysis Strategies}: Here the execution model is selected. It implements the Strategy Pattern to support multiple analysis models. \newline
+
+\textbf{checks/ - Static System Inspection}: This module performs static inspection of the system state. Its role is to simply  collect factual data about the system configuration, crucially without interpreting or evaluating any security implications. Its job is to collect raw facts without providing any insight or meaning.\newline
+
+\textbf{evaluation/ - Static Interpretation}: Here the raw findings produced by the static checks are evaluated and transforms them into security-relevant assessments. Moreover it assign severity and risk levels to the findings.\newline
+
+\textbf{runtime/ - Behavioral Analysis (eBPF)}: Its role is to implement the dynamic runtime monitoring by using eBPF-based runtime observation. It needs to load and manage eBPF programs, collect runtime event streams and detect behavioral patterns. This module is particulary privileged and as a consequence needs to be strictly isolated and controlled.\newline
+
+\textbf{intelligence/ - Vulnerability Intelligence}: It communicates with CVE APIs to intergrate vulnerability intelligence sources. Furthermore it maps system findings to known vulnerabilities. \newline
+
+\textbf{reporting/ - Reporting \& Output}: This module take care of the presentation of the results and findings of the analysis. It supports multiple output targets such as console output and a persistent report (report.txt).\newline
+
+\textbf{privilege/ - Least-Privilege Enforcement}: It is responsible for privilege management as well as enforement which means detecting privilege levels and enforcing privilege boundaries.\newline
+
+\textbf{system/ - System Interaction Abstractions}: It provides safe operating system interaction wrappers as controlled abstractions are needed for interacting with underlying operating system.\newline
+
+\textbf{logging/ - Secure Logging}: Here the logging configuration and behaviour is centralized. It ensures that logs are useful for debugging and auditing without leaking sensitive system information.\newline
+
+\textbf{config/ - Configuration Management}: Its key responsibilities include defining default configuration values and validating configuration inputs. It also manages the runtime configuration state.\newline
+
+\textbf{errors/ - Error Taxonomy}: Its role is to define an explicit error classification. This is where custom exception types are defined and consistent error propagation is supported.\newline
+
+\textbf{utils/ - Shared Utilities}: It provides reusable helper functions. Its main goal is to avoid duplication.
+
+
 \subsubsection{Entry point of the application}
 
 The entry point of the application is the CLI. 
