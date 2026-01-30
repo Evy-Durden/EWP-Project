@@ -113,22 +113,11 @@ Any architecture decision introduces deliberate constraints and trade-offs. The 
 
 \subsubsection{Edge Cases}
 
-\begin{itemize}
-	\item Different CVE databases disagree on severity and classification 
-	\item CVE API outage or rate limits
-	\item CVE exists but is not published yet
-	\item The tool finds no vulnerabilities at all which can lead to a false sense of security
-	\item Insufficient permissions to collect data during the analysis
-	\item Behavior is found which appears to be malicious but is benign
-	\item Inconsistent results between repeated runs
-\end{itemize}
+There are various potential edge cases which are worth further examining. There is a chance different CVE databases disagree in severity and classification. The CVE API has an outage or rate limits. A CVE exists but it is not published yet. The tool does not find any vulnerabilities which can lead to a false sense of security. The permissions during the analysis are insufficient to collect helpful or any data at all.  Behaviour is found which appears and is deemed to be malicious but is in fact benign. The tool displays inconsistent results between repeated runs. 
 
 \subsubsection{Future Improvements}
 
-\begin{itemize}
-	\item Supplying the user with mitigation strategies
-	\item Extending output: adding JSON, integration with CI/CD pipelines
-\end{itemize}
+Due to any tool having limitations there is room for future improvements. Supplying users with mitigation strategies would help them instantly to act on the results of the analysis. Extending the output in terms of adding at least one more format like JSON and facitilitate an integration with CI/CD pipelines would add a substantial amount of value to the tool. \newline
 
 This concludes the design chapter. The next chapter concerns the implementation of the tool.
 
