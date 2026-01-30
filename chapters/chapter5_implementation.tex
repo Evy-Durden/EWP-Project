@@ -63,7 +63,7 @@ The folder structure is provided in the appendix ~\ref{sec:a_foldstruc}.
 
 \textbf{analysis/ - Analysis Strategies}: Here the execution model is selected. It implements the Strategy Pattern to support multiple analysis models. \newline
 
-\textbf{checks/ - Static System Inspection}: This module performs static inspection of the system state. Its role is to simply  collect factual data about the system configuration, crucially without interpreting or evaluating any security implications. Its job is to collect raw facts without providing any insight or meaning.\newline
+\textbf{checks/ - Static System Inspection}: This module performs static inspection of the system state. Its role is to simply collect factual data about the system configuration, crucially without interpreting or evaluating any security implications. Its job is to collect raw facts without providing any insight or meaning.\newline
 
 \textbf{evaluation/ - Static Interpretation}: Here the raw findings produced by the static checks are evaluated and transforms them into security-relevant assessments. Moreover it assign severity and risk levels to the findings.\newline
 
@@ -88,21 +88,29 @@ The folder structure is provided in the appendix ~\ref{sec:a_foldstruc}.
 
 \subsubsection{Entry point of the application}
 
-The entry point of the application is the CLI. 
+The entry point of the application is the CLI. As this is a CLI tool all user interaction will be handled through it by using the appropriate flags. The CLI is responsible for parsing input, validating options, and dispatching execution to the corresponding internal commands.
 
 \subsection{Key Components}
 
 \subsubsection{CLI}
 
+It serves as the entry point of the application. The user interacts with application over the CLI. 
+
 \subsubsection{Analysis Interface}
+
+Its purpose is to implement the strategy pattern. It lays the foundation for being able to run multiple analysis types.
 
 \subsubsection{Static Analysis}
 
+It is divided in two distinct stages. The first stage of the analysis simply collects data about the system configuration. Afterwards in a separate process the findings from the first stage are evaluated and put into a security context.
+
 \subsubsection{Behavioral Analysis}
+
+It is the second type of analysis and uses eBPF programs to determine any runtime behavioral patterns.
 
 \subsubsection{CVE Database Ports and Adapters}
 
-\subsection{Error Handling \& Logging}
+This component adds intelligence from outside sources. If applicable it associates the findings with any known and well-documented vulnerabilities.
 
 \subsubsection{Exceptions}
 
@@ -118,6 +126,8 @@ Logging focuses on two distinct purposes:
 \end{enumerate}
 
 \subsection{Security Aspects in Implementation}
+
+This tool deals with very sensitive data. Therefore it is of the utmost importance to ensure security is a high priority and part of the whole development process, influencing architectural as well as implementation decisions.
 
 \subsubsection{Defensive Validation}
 
@@ -140,6 +150,8 @@ There are multiple strategies in place to combat command injection. As mentioned
 The tool adheres to the principle of least privilege through various aspects. First and foremost its default is unprivileged execution and it only requests elevated privileges for checks that cannot be performed otherwise. Additionally privilege requirements are evaluated for each individual check rather than globally. Consequently the attack surface is minimized and risk of unintended system interaction is reduced.
 
 \subsection{Challenges during Implementation}
+
+Over the course of developing this tool I have encountered a plethora of challenges, ranging from encountering technical issues to engaging with the consequences of architectural decisions. There were a number of technologies, architectural aspects and general concepts of software development that were uncharted territory for me. 
 
 \subsubsection{Technical Issues}
 
