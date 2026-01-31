@@ -33,18 +33,21 @@ The pyproject.toml file is a configuration file for Python packaging. It acts as
 \begin{lstlisting}[language=bash,caption={pyproject.toml file}]
 [build-system]
 requires = ["setuptools"]
-build-backend = "setuptools.build\_meta"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "linux-analyzer"
 version = "0.1.0"
 description = "Misconfiguration scanner for Linux"
 dependencies = [
-	"typer"
+    "typer"
 ]
 
 [project.scripts]
-linux-analyzer = "linux_analyzer.cli:cli"
+linux-analyzer = "linux_analyzer.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
 \end{lstlisting}
 
 \subsection{Implementation Overview}
@@ -94,7 +97,28 @@ The entry point of the application is the CLI. As this is a CLI tool all user in
 
 \subsubsection{CLI}
 
-It serves as the entry point of the application. The user interacts with application over the CLI. 
+It serves as the entry point of the application, specifically the main.py file. The user interacts with application over the CLI. It is comprised of four files to adhere to the principle of separation of concern. main.py sole responsibility is to start up the CLI. menu.py handles what happens when a user chooses a menu option. prompts.py takes care of the user input and is responsible for syntactic validation. output.py is the representation layer. It determines how things look across the entire CLI. 
+
+\begin{lstlisting}[language=python,caption={entry point: main.py file}]
+import typer
+from .menu import show_menu
+
+# creating a typer app
+app = typer.Typer()
+
+@app.command()
+def main():
+	"""
+	The @app.command() decorator turns a function into a CLI command.
+	Main simple calls into menu.py and does not implement any menu logic itself.
+	The reason is separation of concern for testability, readability and maintainability.
+	"""
+	show_menu()
+	
+# ensure that code is only run when script is executed and not when it is imported
+if __name__ == "__main__":
+	app()
+\end{lstlisting}
 
 \subsubsection{Analysis Interface}
 
