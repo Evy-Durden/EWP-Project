@@ -96,16 +96,14 @@
 \label{sec:a_foldstruc}
 
 \begin{verbatim}
-linux-analyzer/
+EWP-Code/
 |
 +-- README.md
-+-- pyproject.toml 
++-- pyproject.toml
 +-- requirements.txt
 |
 +-- docs/
 |   +-- architecture.md
-|   +-- hexagonal-architecture.md
-|   +-- strategy-pattern.md
 |   +-- flowchart.png
 |   +-- data-flow.md
 |   +-- threat-model.md
@@ -114,60 +112,59 @@ linux-analyzer/
 |   \-- limitations.md
 |
 +-- src/
-|   \--linux-analyzer/
+|   \-- linux_analyzer/
 |       +-- __init__.py
-|       |
-|       +-- core/                          # APPLICATION CORE (inside hexagon)
-|       |   +-- orchestrator.py            # Depends only on ports
-|       |   +-- pipeline.py                # Execution flow
-|       |   +-- context.py                 # Runtime & privilege context
-|       |   \-- models.py                  # Finding, EvaluationResult, ReportItem
-|       |
-|       +-- ports/                         # PORTS (interfaces owned by core)
+|
+|       +-- cli/                         # User interaction (untrusted boundary)
 |       |   +-- __init__.py
-|       |   +-- analysis.py                # AnalysisStrategy
-|       |   +-- checks.py                  # Check interface
-|       |   +-- evaluation.py              # Static evaluation port
-|       |   +-- runtime.py                 # RuntimeAnalyzer (eBPF)
-|       |   +-- intelligence.py            # CVEProvider
-|       |   \-- reporting.py               # ReportWriter
-|       |
-|       +-- analysis/                      # STRATEGY IMPLEMENTATIONS (adapters)
+|       |   +-- main.py                  # CLI entry point
+|       |   +-- menu.py
+|       |   +-- output.py                # Console formatting only
+|       |   \-- prompts.py
+|
+|       +-- core/                        # Orchestration & pipeline (application core)
 |       |   +-- __init__.py
-|       |   +-- static.py                  # StaticAnalysisStrategy
-|       |   \-- behavioral.py              # BehavioralAnalysisStrategy
-|       |
-|       +-- checks/                        # STATIC ANALYSIS (adapters)
+|       |   +-- orchestrator.py          # High-level control flow
+|       |   +-- pipeline.py              # Static → Eval → Runtime → Intel → Report
+|       |   +-- context.py               # OS, privilege, runtime flags
+|       |   \-- results.py               # Unified result containers
+|
+|       +-- checks/                      # STATIC ANALYSIS (facts only)
 |       |   +-- __init__.py
-|       |   +-- base.py                    # Implements ports.checks
+|       |   +-- base.py                  # Check interface
 |       |   |
 |       |   +-- filesystem/
+|       |   |   +-- __init__.py
 |       |   |   +-- permissions.py
 |       |   |   \-- sensitive_files.py
 |       |   |
 |       |   +-- users/
+|       |   |   +-- __init__.py
 |       |   |   +-- accounts.py
 |       |   |   \-- groups.py
 |       |   |
 |       |   +-- services/
+|       |   |   +-- __init__.py
 |       |   |   \-- running_services.py
 |       |   |
 |       |   \-- networking/
+|       |       +-- __init__.py
 |       |       \-- open_ports.py
-|       |
-|       +-- evaluation/                    # STATIC INTERPRETATION (adapters)
+|
+|       +-- evaluation/                  # STATIC INTERPRETATION
 |       |   +-- __init__.py
-|       |   +-- base.py                    # Implements evaluation port
+|       |   +-- base.py                  # EvaluationResult model
 |       |   +-- filesystem.py
 |       |   +-- users.py
 |       |   +-- services.py
 |       |   +-- networking.py
-|       |   \-- severity.py
-|       |
-|       +-- runtime/                       # BEHAVIORAL ANALYSIS (eBPF adapters)
+|       |   \-- severity.py              # Risk/severity mapping
+|
+|       +-- runtime/                     # BEHAVIORAL ANALYSIS (eBPF)
 |       |   +-- __init__.py
 |       |   |
 |       |   +-- ebpf/
+|       |   |   +-- __init__.py
 |       |   |   +-- programs/
 |       |   |   |   +-- process_exec.bpf.c
 |       |   |   |   +-- file_access.bpf.c
@@ -181,49 +178,50 @@ linux-analyzer/
 |       |   +-- aggregators.py
 |       |   +-- detectors.py
 |       |   \-- limits.py
-|       |
-|       +-- intelligence/                  # CVE & vulnerability data (adapters)
+|
+|       +-- intelligence/                # External vulnerability data
 |       |   +-- __init__.py
 |       |   +-- cve_client.py
 |       |   +-- cve_mapper.py
 |       |   +-- cache.py
 |       |   \-- schemas.py
-|       |
-|       +-- reporting/                     # OUTPUT & PERSISTENCE (adapters)
+|
+|       +-- reporting/                   # Output & persistence
 |       |   +-- __init__.py
 |       |   +-- report.py
 |       |   +-- redaction.py
 |       |   |
 |       |   \-- writers/
-|       |       +-- txt.py                 # report.txt
+|       |       +-- __init__.py
+|       |       +-- txt.py
 |       |       +-- json.py
 |       |       \-- console.py
-|       |
-|       +-- privilege/                     # LEAST PRIVILEGE ENFORCEMENT
+|
+|       +-- privilege/                   # Least-privilege enforcement
 |       |   +-- __init__.py
 |       |   +-- detector.py
 |       |   +-- guard.py
 |       |   \-- escalation.py
-|       |
-|       +-- system/                        # OS & system interaction
+|
+|       +-- system/                      # OS interaction wrappers
 |       |   +-- __init__.py
 |       |   +-- os_info.py
 |       |   +-- filesystem.py
 |       |   +-- process.py
 |       |   \-- networking.py
-|       |
-|       +-- logging/                       # SECURE LOGGING
+|
+|       +-- logging/                     # Secure logging
 |       |   +-- __init__.py
 |       |   +-- logger.py
 |       |   \-- filters.py
-|       |
-|       +-- config/                        # CONFIGURATION
+|
+|       +-- config/                      # Configuration & validation
 |       |   +-- __init__.py
 |       |   +-- defaults.py
 |       |   +-- runtime.py
 |       |   \-- schema.py
-|       |
-|       +-- errors/                        # ERROR TAXONOMY
+|
+|       +-- errors/                      # Explicit error taxonomy
 |       |   +-- __init__.py
 |       |   +-- base.py
 |       |   +-- check.py
@@ -232,8 +230,8 @@ linux-analyzer/
 |       |   +-- intelligence.py
 |       |   +-- reporting.py
 |       |   \-- privilege.py
-|       |
-|       \-- utils/                         # NON-SECURITY HELPERS
+|
+|       \-- utils/                       # Non-security helpers
 |           +-- __init__.py
 |           +-- helpers.py
 |           \-- decorators.py
@@ -242,10 +240,8 @@ linux-analyzer/
 |   +-- unit/
 |   |   +-- test_checks.py
 |   |   +-- test_evaluation.py
-|   |   +-- test_analysis_strategies.py
 |   |   +-- test_runtime.py
-|   |   +-- test_intelligence.py
-|   |   \-- test_reporting.py
+|   |   \-- test_intelligence.py
 |   |
 |   +-- integration/
 |   |   \-- test_full_pipeline.py
@@ -255,6 +251,7 @@ linux-analyzer/
 |
 \-- scripts/
     \-- run_dev.sh
+
 \end{verbatim}
 
 
