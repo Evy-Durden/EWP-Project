@@ -104,6 +104,8 @@ EWP-Code/
 |
 +-- docs/
 |   +-- architecture.md
+|   +-- hexagonal-architecture.md
+|   +-- strategy-pattern.md
 |   +-- flowchart.png
 |   +-- data-flow.md
 |   +-- threat-model.md
@@ -114,57 +116,58 @@ EWP-Code/
 +-- src/
 |   \-- linux_analyzer/
 |       +-- __init__.py
-|
-|       +-- cli/                         # User interaction (untrusted boundary)
+|       |
+|       +-- core/                          # APPLICATION CORE (inside hexagon)
+|       |   +-- orchestrator.py            # Depends only on ports
+|       |   +-- pipeline.py                # Execution flow
+|       |   +-- context.py                 # Runtime & privilege context
+|       |   \-- models.py                  # Finding, EvaluationResult, ReportItem
+|       |
+|       +-- ports/                         # PORTS (interfaces owned by core)
 |       |   +-- __init__.py
-|       |   +-- main.py                  # CLI entry point
-|       |   +-- menu.py
-|       |   +-- output.py                # Console formatting only
-|       |   \-- prompts.py
-|
-|       +-- core/                        # Orchestration & pipeline (application core)
+|       |   +-- analysis.py                # AnalysisStrategy
+|       |   +-- checks.py                  # Check interface
+|       |   +-- evaluation.py              # Static evaluation port
+|       |   +-- runtime.py                 # RuntimeAnalyzer (eBPF)
+|       |   +-- intelligence.py            # CVEProvider
+|       |   \-- reporting.py               # ReportWriter
+|       |
+|       +-- analysis/                      # STRATEGY IMPLEMENTATIONS (adapters)
 |       |   +-- __init__.py
-|       |   +-- orchestrator.py          # High-level control flow
-|       |   +-- pipeline.py              # Static → Eval → Runtime → Intel → Report
-|       |   +-- context.py               # OS, privilege, runtime flags
-|       |   \-- results.py               # Unified result containers
-|
-|       +-- checks/                      # STATIC ANALYSIS (facts only)
+|       |   +-- static.py                  # StaticAnalysisStrategy
+|       |   \-- behavioral.py              # BehavioralAnalysisStrategy
+|       |
+|       +-- checks/                        # STATIC ANALYSIS (adapters)
 |       |   +-- __init__.py
-|       |   +-- base.py                  # Check interface
+|       |   +-- base.py                    # Implements ports.checks
 |       |   |
 |       |   +-- filesystem/
-|       |   |   +-- __init__.py
 |       |   |   +-- permissions.py
 |       |   |   \-- sensitive_files.py
 |       |   |
 |       |   +-- users/
-|       |   |   +-- __init__.py
 |       |   |   +-- accounts.py
 |       |   |   \-- groups.py
 |       |   |
 |       |   +-- services/
-|       |   |   +-- __init__.py
 |       |   |   \-- running_services.py
 |       |   |
 |       |   \-- networking/
-|       |       +-- __init__.py
 |       |       \-- open_ports.py
-|
-|       +-- evaluation/                  # STATIC INTERPRETATION
+|       |
+|       +-- evaluation/                    # STATIC INTERPRETATION (adapters)
 |       |   +-- __init__.py
-|       |   +-- base.py                  # EvaluationResult model
+|       |   +-- base.py                    # Implements evaluation port
 |       |   +-- filesystem.py
 |       |   +-- users.py
 |       |   +-- services.py
 |       |   +-- networking.py
-|       |   \-- severity.py              # Risk/severity mapping
-|
-|       +-- runtime/                     # BEHAVIORAL ANALYSIS (eBPF)
+|       |   \-- severity.py
+|       |
+|       +-- runtime/                       # BEHAVIORAL ANALYSIS (eBPF adapters)
 |       |   +-- __init__.py
 |       |   |
 |       |   +-- ebpf/
-|       |   |   +-- __init__.py
 |       |   |   +-- programs/
 |       |   |   |   +-- process_exec.bpf.c
 |       |   |   |   +-- file_access.bpf.c
@@ -178,50 +181,49 @@ EWP-Code/
 |       |   +-- aggregators.py
 |       |   +-- detectors.py
 |       |   \-- limits.py
-|
-|       +-- intelligence/                # External vulnerability data
+|       |
+|       +-- intelligence/                  # CVE & vulnerability data (adapters)
 |       |   +-- __init__.py
 |       |   +-- cve_client.py
 |       |   +-- cve_mapper.py
 |       |   +-- cache.py
 |       |   \-- schemas.py
-|
-|       +-- reporting/                   # Output & persistence
+|       |
+|       +-- reporting/                     # OUTPUT & PERSISTENCE (adapters)
 |       |   +-- __init__.py
 |       |   +-- report.py
 |       |   +-- redaction.py
 |       |   |
 |       |   \-- writers/
-|       |       +-- __init__.py
-|       |       +-- txt.py
+|       |       +-- txt.py                 # report.txt
 |       |       +-- json.py
 |       |       \-- console.py
-|
-|       +-- privilege/                   # Least-privilege enforcement
+|       |
+|       +-- privilege/                     # LEAST PRIVILEGE ENFORCEMENT
 |       |   +-- __init__.py
 |       |   +-- detector.py
 |       |   +-- guard.py
 |       |   \-- escalation.py
-|
-|       +-- system/                      # OS interaction wrappers
+|       |
+|       +-- system/                        # OS & system interaction
 |       |   +-- __init__.py
 |       |   +-- os_info.py
 |       |   +-- filesystem.py
 |       |   +-- process.py
 |       |   \-- networking.py
-|
-|       +-- logging/                     # Secure logging
+|       |
+|       +-- logging/                       # SECURE LOGGING
 |       |   +-- __init__.py
 |       |   +-- logger.py
 |       |   \-- filters.py
-|
-|       +-- config/                      # Configuration & validation
+|       |
+|       +-- config/                        # CONFIGURATION
 |       |   +-- __init__.py
 |       |   +-- defaults.py
 |       |   +-- runtime.py
 |       |   \-- schema.py
-|
-|       +-- errors/                      # Explicit error taxonomy
+|       |
+|       +-- errors/                        # ERROR TAXONOMY
 |       |   +-- __init__.py
 |       |   +-- base.py
 |       |   +-- check.py
@@ -230,8 +232,8 @@ EWP-Code/
 |       |   +-- intelligence.py
 |       |   +-- reporting.py
 |       |   \-- privilege.py
-|
-|       \-- utils/                       # Non-security helpers
+|       |
+|       \-- utils/                         # NON-SECURITY HELPERS
 |           +-- __init__.py
 |           +-- helpers.py
 |           \-- decorators.py
@@ -240,8 +242,10 @@ EWP-Code/
 |   +-- unit/
 |   |   +-- test_checks.py
 |   |   +-- test_evaluation.py
+|   |   +-- test_analysis_strategies.py
 |   |   +-- test_runtime.py
-|   |   \-- test_intelligence.py
+|   |   +-- test_intelligence.py
+|   |   \-- test_reporting.py
 |   |
 |   +-- integration/
 |   |   \-- test_full_pipeline.py
@@ -251,6 +255,7 @@ EWP-Code/
 |
 \-- scripts/
     \-- run_dev.sh
+
 
 \end{verbatim}
 
