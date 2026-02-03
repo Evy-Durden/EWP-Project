@@ -124,6 +124,19 @@ if __name__ == "__main__":
 
 Its purpose is to implement the strategy pattern. It lays the foundation for being able to run multiple analysis types.
 
+\begin{lstlisting}[language=python,caption={entry point: main.py file}]
+from abc import ABC, abstractmethod
+from linux_analyzer.core.context import ExecutionContext
+from linux_analyzer.core.models import Finding
+from typing import List
+
+class AnalysisStrategy(ABC):
+
+    @abstractmethod
+    def run(self, context: ExecutionContext) -> List[Finding]:
+        ...
+\end{lstlisting}
+
 \subsubsection{Static Analysis}
 
 It is divided in two distinct stages. The first stage of the analysis simply collects data about the system configuration. Afterwards in a separate process the findings from the first stage are evaluated and put into a security context.
