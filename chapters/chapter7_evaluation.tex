@@ -30,21 +30,29 @@ This chapter answers the question if the code is structured and well-documented.
 
 This chapter answers the question if the tool is fast and scales well.
 
-\subsection{Overview of Tests and Setup}
+\subsection{Overview of Tests}
+
+Software tests are processes which evaluate, verify and improve software quality, security and performance against defined requirements. The purpose is  to prevent errors, ensuring proper functionality and detect any defects before deployment \footnote{Stephanie Susnjara. Software testing, defined. [online] homepage: ibm.com URL: https://www.ibm.com/think/topics/software-testing [Accessed 05.02.2026]}.
 
 \subsubsection{Pytest Framework}
 
+The pytest framework is used to write the tests for the tool. The primary focus is on assertions and unit tests.
+
 \subsubsection{Test Cases and Use Scenarios}
 
-\subsection{Tests and Analysis}
-
-
+\subsection{Test Results and Analysis}
 
 \subsection{Discussion}
 
+The chosen technology stack, architecture and personal experience in software development have a profound impact on how the tool will function at the end. Every application has strengths as well as weaknesses and this tool is no exception.
+
 \subsubsection{Strengths}
 
+The tool does not just provide static analysis but also behavioral analysis during runtime. This allows to detect misconfigurations which only appear at runtime. Static scanners only report the file's permissions but eBPF shows whether the dangerous condition is actually exploited. \newline The CLI tool is user-friendly with a minimal learning curve. Even though only a view options are available they can produce a lot of relevant and helpful information.
+
 \subsubsection{Weaknesses and Limitations}
+
+The tool is completely reliant on outside sources for the CVE data.  Consequently this option only works if the system is connected to the internet and the CVE databases can be reached. \newline The tool only provides two types of output at the moment. The output is displayed on the console and optionally it can be put into a text file.
 
 \subsection{Comparison to other Tools}
 
