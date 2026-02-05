@@ -53,6 +53,24 @@ The behavioral part of the analysis is a different story though. Runtime analysi
 
 \subsection{Performance}
 
+Measuring the performance of the tool includes a wide variety of topics including execution time, resource consumption and scalability which relates to input sensitivity.
+
 \subsubsection{Execution Time}
 
+There are three aspects worth examining in the context of execution time. The end-to-end runtime is the total time from CLI invocation all the way to the result output. The phase-level runtime distinguishes between the static analyis time, the behavioral analysis time and preprocessing (parsing, loading rules). It is also helpful to differentiate between first run vs subsequent runs (caches, compiled rules).
+
+\subsubsection{Resource Consumption}
+
+The average as well as peak CPU utilization are of interest. It is also advisable to look at the memory specifically the peak RSS and memory growth over time (leaks). Another aspect is disk I/O in terms of files read/written and temporary artifacts.
+
 \subsubsection{Statisitcs and Benchmarking}
+
+The core metrics which are mandatory to be collected are mean runtime, median runtime, peak memory usage and CPU time. Another interesting angle of the performance to look at are the scaling metrics. They show how the runtime relates to input size or the memory behaves in relation to input size. Furthermore events processed by second and files analyzed per second are also significant metrics.
+
+
+
+
+
+
+
+
