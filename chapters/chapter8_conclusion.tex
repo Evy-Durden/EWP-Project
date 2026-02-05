@@ -1,1 +1,7 @@
 \section{Conclusion and Future Work}
+
+The goal was to design and build an analysis tool which detects misconfigurations on Linux machines in order to provide information which can be used to mitigate future attempts of privilege escalation. The important difference to common analysis tools is that it has multiple strategies through both static and behavioral analysis. \newline 
+
+The work focused on architectural correctness, security boundaries and extensibility. The hexagonal archticture was applied cleanly to the CLI tool. Privilege separation and clear trust boundaries were implemented. \newline 
+
+The hexagonal architecture gave me the opportunity to truly understand the separation of concern principle. I experienced first hand how trade-offs cause frictions and make the decision process a lot harder. Speed of implementation and correctness are antagonists. Security is also a high priority due to the nature of the tool. This made it extremely hard to make progress at times.
