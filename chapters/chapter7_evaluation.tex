@@ -56,11 +56,19 @@ The tool is completely reliant on outside sources for the CVE data.  Consequentl
 
 \subsection{Comparison to other Tools}
 
+There are already a plethora of tools on the market which have the same purpose including but not limited to Lynis, LinPEAS and OpenVAS.
+
 \subsubsection{Similarities}
+
+My tool and the exisiting ones implement a static analysis of the system to identify misconfigurations such as weak file permissions, SUID binaries etc.
 
 \subsubsection{Differences}
 
+Some the exisiting tools provide specific and actionable recommendations for system hardening. \newline
+
+My tool also analyzes the system behaviorally during runtime using eBPF.
+
 \subsection{User Feedback}
 
-
+So far users have concluded that the tool is easy to use and understand. It does provide valuable information however the output on the console could be spaced better and preferably color-coded. It lacking number output formats was also mentioned.
 
