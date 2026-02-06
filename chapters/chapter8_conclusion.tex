@@ -4,4 +4,13 @@ The goal was to design and build an analysis tool which detects misconfiguration
 
 The work focused on architectural correctness, security boundaries and extensibility. The hexagonal archticture was applied cleanly to the CLI tool. Privilege separation and clear trust boundaries were implemented. \newline 
 
-The hexagonal architecture gave me the opportunity to truly understand the separation of concern principle. I experienced first hand how trade-offs cause frictions and make the decision process a lot harder. Speed of implementation and correctness are antagonists. Security is also a high priority due to the nature of the tool. This made it extremely hard to make progress at times.
+The hexagonal architecture gave me the opportunity to truly understand the separation of concern principle. I experienced first hand how trade-offs cause frictions and make the decision process a lot harder. Speed of implementation and correctness are antagonists. Security is also a high priority due to the nature of the tool. This made it extremely hard to make progress at times.\newline
+
+The tool can provide a substantial amount of information about the system and what the findings mean and what the consequences might be. What it can not do is lay out strategies to mitigate the vulnerabilties. It does not provide concrete steps which help to resolve the problems found in the analysis.\newline
+
+In the short-term the plan is to add more output formats especially JSON as it is a widely used data serialization format. It will ensure that the tool can exchange data with a variety of other platforms and applications. In the medium-term it is important to expand on the performance evaluation and keep enhancing security guarantees. In the long-term the goal is to erase the biggest limitation of the tool and implement an option which will provide the user with strategies to help him solve the problems of the system. Because the tool was designed using the hexagonal architecture and there is already infrastructure for API communication, it enables AI integration as future work. An AI can be supplied with output of the analysis and can be tasked with curating a step by step list for fixing the issues and hardening the system.\newline
+
+Working on this project shaped the way I think about system design and my approach to work on tasks like this in general. Extensive research, analysis and requirements engineering are mandatory before writing the first line of code. The more information, insight and understanding one has the better the outcome will be. Furthermore it will prevent going back and forth and instead lays out a clear strategy and path to walk on.\newline
+
+The linux-analyzer tool provides a solid foundation for combining static and behavioral analysis. Its architecture allows for extensibility and ensure that it can be improved consistently in the future.
+
