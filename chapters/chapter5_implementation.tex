@@ -124,7 +124,7 @@ if __name__ == "__main__":
 
 Its purpose is to implement the strategy pattern. It lays the foundation for being able to run multiple analysis types.
 
-\begin{lstlisting}[language=python,caption={entry point: main.py file}]
+\begin{lstlisting}[language=python,caption={Analysis Interface}]
 from abc import ABC, abstractmethod
 from linux_analyzer.core.context import ExecutionContext
 from linux_analyzer.core.models import Finding
@@ -140,6 +140,28 @@ class AnalysisStrategy(ABC):
 \subsubsection{Static Analysis}
 
 It is divided in two distinct stages. The first stage of the analysis simply collects data about the system configuration. Afterwards in a separate process the findings from the first stage are evaluated and put into a security context.
+
+\begin{lstlisting}[language=python,caption={First stage of static analysis}]
+class StaticAnalysisStrategy(AnalysisStrategy):
+	"""
+	This class uses the checks provided in the various subfolder of the check folder
+	to inspect system configurations and system states.
+	"""
+  def __init__(self) -> None:
+    self.checks = [
+      KernelVersionCheck(),
+      PermissionsCheck(),
+      UserAccountsCheck()
+    ]
+
+  def run(self, context: ExecutionContext) -> list[Finding]:
+    findings: list[Finding] = []
+
+    for check in self.checks:
+      findings.extend(check.run(context))
+
+    return findings
+\end{lstlisting}
 
 \subsubsection{Behavioral Analysis}
 
