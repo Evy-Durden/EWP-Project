@@ -10,6 +10,7 @@ The primary programming language used for this tool is Python. Bash (system comm
 
 \begin{itemize}
 	\item Typer
+	\item Pytest
 \end{itemize}
 
 \subsection{System Setup / Dependencies}
@@ -17,6 +18,8 @@ The primary programming language used for this tool is Python. Bash (system comm
 \subsubsection{Installation and Setup}
 
 The tool is a Python package which can be installed via pip. It is distributed as a Pythin CLI application and follows the standard packaging conventions. This ensures reproducibility and ease of installation. Morover it separates domain logic (encoding security reasoning) from infrastructure concerns (interaction with operating system and external systems).
+
+\newpage
 
 \subsubsection{Python Virtual Environment}
 
@@ -50,6 +53,8 @@ linux-analyzer = "linux_analyzer.cli.main:main"
 where = ["src"]
 \end{lstlisting}
 
+\newpage
+
 \subsection{Implementation Overview}
 
 This chapter is designed to be a high level explanation of the code structure.
@@ -74,6 +79,8 @@ The folder structure is provided in the appendix ~\ref{sec:a_foldstruc}.
 
 \textbf{intelligence/ - Vulnerability Intelligence}: It communicates with CVE APIs to intergrate vulnerability intelligence sources. Furthermore it maps system findings to known vulnerabilities. \newline
 
+\newpage
+
 \textbf{reporting/ - Reporting \& Output}: This module take care of the presentation of the results and findings of the analysis. It supports multiple output targets such as console output and a persistent report (report.txt).\newline
 
 \textbf{privilege/ - Least-Privilege Enforcement}: It is responsible for privilege management as well as enforement which means detecting privilege levels and enforcing privilege boundaries.\newline
@@ -92,6 +99,8 @@ The folder structure is provided in the appendix ~\ref{sec:a_foldstruc}.
 \subsubsection{Entry point of the application}
 
 The entry point of the application is the CLI. As this is a CLI tool all user interaction will be handled through it by using the appropriate flags. The CLI is responsible for parsing input, validating options, and dispatching execution to the corresponding internal commands.
+
+\newpage
 
 \subsection{Key Components}
 
